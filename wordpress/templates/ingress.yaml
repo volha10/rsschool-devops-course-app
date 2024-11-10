@@ -35,7 +35,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "wordpress.fullname" $ }}
+                name: {{ include "wordpress.fullname" $ }}-wordpress
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

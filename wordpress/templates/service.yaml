@@ -1,15 +1,42 @@
+# WordPress Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "wordpress.fullname" . }}
+  name: {{ include "wordpress.fullname" . }}-wordpress
   labels:
-    {{- include "wordpress.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ include "wordpress.name" . }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/component: wordpress
 spec:
-  type: {{ .Values.service.type }}
-  ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+  type: NodePort  # Change this to LoadBalancer if you want to expose it externally (on cloud environments)
   selector:
-    {{- include "wordpress.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ include "wordpress.name" . }}
+    app.kubernetes.io/component: wordpress
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      nodePort: 30001  # The port on which you can access the WordPress site
+---
+# MySQL Service (internal communication)
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "wordpress.fullname" . }}-mysql
+  labels:
+    app.kubernetes.io/name: {{ include "wordpress.name" . }}
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/component: mysql
+spec:
+  type: ClusterIP  # MySQL should be internally accessible, no need for NodePort or LoadBalancer
+  selector:
+    app.kubernetes.io/name: {{ include "wordpress.name" . }}
+    app.kubernetes.io/component: mysql
+  ports:
+    - port: 3306
+      targetPort: 3306
+      protocol: TCP
