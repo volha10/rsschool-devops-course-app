@@ -1,55 +1,61 @@
-# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
-image:
-  repository: wordpress
-  # This sets the pull policy for images.
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: latest
-
-
-service:
-  type: NodePort   # The service type, can be "ClusterIP", "NodePort", or "LoadBalancer"
-
-
-
-# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: true
-  # Automatically mount a ServiceAccount's API credentials?
-  automount: true
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
-
-
-wordpress:
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: exampleuser
-      WORDPRESS_DB_PASSWORD: examplepass
-      WORDPRESS_DB_NAME: exampledb
-    volumes:
-      - wordpress:/var/www/html
-    persistentVolume:
-      enabled: true
-      size: 1Gi
-      storageClass: "standard"
-
-db:
-    environment:
-      MYSQL_DATABASE: exampledb
-      MYSQL_USER: exampleuser
-      MYSQL_PASSWORD: examplepass
-      MYSQL_RANDOM_ROOT_PASSWORD: '1'
-    volumes:
-      - db:/var/lib/mysql
-    persistentVolume:
-      enabled: true
-      size: 1Gi
-      storageClass: "standard"
-
-ingress:
-  enabled: false
+## This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+#image:
+#  repository: wordpress
+#  # This sets the pull policy for images.
+#  pullPolicy: IfNotPresent
+#  # Overrides the image tag whose default is the chart appVersion.
+#  tag: 6.2.1-apache
+#  debug: true
+#
+#
+#service:
+#  type: NodePort   # The service type, can be "ClusterIP", "NodePort", or "LoadBalancer"
+#
+#
+#
+## This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+#serviceAccount:
+#  # Specifies whether a service account should be created
+#  create: false
+#  # Automatically mount a ServiceAccount's API credentials?
+#  automount: false
+#  # Annotations to add to the service account
+#  annotations: {}
+#  # The name of the service account to use.
+#  # If not set and create is true, a name is generated using the fullname template
+#  name: ""
+#
+#
+#wordpress:
+#    environment:
+#      WORDPRESS_DB_HOST: db:3306
+#      WORDPRESS_DB_USER: exampleuser
+#      WORDPRESS_DB_PASSWORD: examplepass
+#      WORDPRESS_DB_NAME: exampledb
+#    volumes:
+#      - wordpress:/var/www/html
+#    persistentVolume:
+#      enabled: true
+#      size: 1Gi
+#      storageClass: "standard"
+#
+#db:
+#    environment:
+#      MYSQL_DATABASE: exampledb
+#      MYSQL_USER: exampleuser
+#      MYSQL_PASSWORD: examplepass
+#      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+#    volumes:
+#      - db:/var/lib/mysql
+#    persistentVolume:
+#      enabled: true
+#      size: 1Gi
+#      storageClass: "standard"
+#
+#ingress:
+#  enabled: false
+#
+#
+#mariadb:
+#  ## Whether to deploy a mariadb server to satisfy the applications database requirements. To use an external database set this to false and configure the externalDatabase parameters
+#  enabled: false

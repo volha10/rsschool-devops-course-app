@@ -1,33 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "wordpress.fullname" . }}-mysql
+  name: wordpress-mysql
+  labels:
+    app: wordpress
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: {{ include "wordpress.name" . }}-mysql
+      app: wordpress
+      tier: mysql
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
-        app: {{ include "wordpress.name" . }}-mysql
+        app: wordpress
+        tier: mysql
+
     spec:
       containers:
         - name: mysql
-          image: mysql:latest
+          image: mysql:8.0
           env:
-            - name: MYSQL_DATABASE
-              value: "{{ .Values.db.environment.MYSQL_DATABASE }}"
-            - name: MYSQL_USER
-              value: "{{ .Values.db.environment.MYSQL_USER }}"
-            - name: MYSQL_PASSWORD
-              value: "{{ .Values.db.environment.MYSQL_PASSWORD }}"
-            - name: MYSQL_RANDOM_ROOT_PASSWORD
-              value: "{{ .Values.db.environment.MYSQL_RANDOM_ROOT_PASSWORD }}"
-          volumeMounts:
-            - name: db
-              mountPath: /var/lib/mysql
-      volumes:
-        - name: db
-          persistentVolumeClaim:
-            claimName: {{ include "wordpress.fullname" . }}-mysql-pvc
+          - name: MYSQL_DATABASE
+            value: wordpress
+          - name: MYSQL_USER
+            value: wordpress
+          - name: MYSQL_PASSWORD
+            value: password
+          - name: MYSQL_ROOT_PASSWORD
+            value: password
+          ports:
+          - containerPort: 3306
+            name: mysql
+          volumeMounts: []
+
