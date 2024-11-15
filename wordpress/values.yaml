@@ -8,8 +8,8 @@
 #  debug: true
 #
 #
-#service:
-#  type: NodePort   # The service type, can be "ClusterIP", "NodePort", or "LoadBalancer"
+service:
+  type: NodePort   # The service type, can be "ClusterIP", "NodePort", or "LoadBalancer"
 #
 #
 #
@@ -26,7 +26,8 @@
 #  name: ""
 #
 #
-#wordpress:
+wordpress:
+  port: 80
 #    environment:
 #      WORDPRESS_DB_HOST: db:3306
 #      WORDPRESS_DB_USER: exampleuser
@@ -39,7 +40,8 @@
 #      size: 1Gi
 #      storageClass: "standard"
 #
-#db:
+mysql:
+  host: wordpress-mysql
 #    environment:
 #      MYSQL_DATABASE: exampledb
 #      MYSQL_USER: exampleuser

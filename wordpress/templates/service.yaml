@@ -2,7 +2,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: wordpress
+  name: {{ include "wordpress.fullname" . }}
+  #namespace: {{ .Release.Namespace | quote }}
   labels:
     app: wordpress
 spec:
@@ -11,14 +12,14 @@ spec:
   selector:
     app: wordpress
     tier: frontend
-  type: NodePort
+  type: {{ .Values.service.type }}
 
 ---
 # MySQL Service (internal communication)
 apiVersion: v1
 kind: Service
 metadata:
-  name: wordpress-mysql
+  name: {{ include "wordpress.fullname" . }}-mysql
   labels:
     app: wordpress
 spec:

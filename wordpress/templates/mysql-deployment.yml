@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wordpress-mysql
+  name: {{ include "wordpress.fullname" . }}-mysql
   labels:
     app: wordpress
 spec:
