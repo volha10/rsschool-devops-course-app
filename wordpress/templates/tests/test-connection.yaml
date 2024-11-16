@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "wordpress.fullname" . }}:{{ .Values.wordpress.port }}']
+      args: ['{{ include "wordpress.fullname" . }}:{{ .Values.service.port }}']
   restartPolicy: Never

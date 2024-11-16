@@ -18,8 +18,9 @@ spec:
         tier: frontend
     spec:
       containers:
-        - name: wordpress
-          image: wordpress:6.2.1-apache
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
           - name: WORDPRESS_DEBUG
             value: "true"
@@ -31,6 +32,6 @@ spec:
             value: password
           ports:
           - containerPort: 80
-            name: wordpress
+            name: http
 
 
