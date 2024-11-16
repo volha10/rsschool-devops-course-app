@@ -8,7 +8,7 @@ http://localhost:8080/
 
 # helm create wordpress
 
-# update values.yml
+# update values.yml 
 
 
 
